@@ -1,0 +1,313 @@
+{
+    "id": "84286935-bd32-4054-876e-987f3cca83ce",
+    "revision": 0,
+    "last_node_id": 7,
+    "last_link_id": 3,
+    "nodes": [
+        {
+            "id": 1,
+            "type": "LoadImage",
+            "pos": [
+                -320,
+                -160
+            ],
+            "size": [
+                270,
+                510
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        1
+                    ]
+                },
+                {
+                    "name": "MASK",
+                    "type": "MASK",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "LoadImage"
+            },
+            "widgets_values": [
+                "example.png",
+                "image"
+            ]
+        },
+        {
+            "id": 2,
+            "type": "NanoBananaEdit_fal",
+            "pos": [
+                80,
+                -120
+            ],
+            "size": [
+                400,
+                220
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "image_1",
+                    "type": "IMAGE",
+                    "link": 1
+                },
+                {
+                    "name": "image_2",
+                    "type": "IMAGE",
+                    "link": null
+                },
+                {
+                    "name": "image_3",
+                    "type": "IMAGE",
+                    "link": null
+                },
+                {
+                    "name": "image_4",
+                    "type": "IMAGE",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        2
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "NanoBananaEdit_fal"
+            },
+            "widgets_values": [
+                "Portrait of a futuristic explorer",
+                1,
+                "jpeg"
+            ]
+        },
+        {
+            "id": 3,
+            "type": "PreviewImage",
+            "pos": [
+                520,
+                -160
+            ],
+            "size": [
+                480,
+                480
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 2
+                }
+            ],
+            "outputs": [],
+            "properties": {
+                "Node name for S&R": "PreviewImage"
+            },
+            "widgets_values": []
+        },
+        {
+            "id": 4,
+            "type": "Seedream4_fal",
+            "pos": [
+                80,
+                200
+            ],
+            "size": [
+                420,
+                240
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "image",
+                    "type": "IMAGE",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        3
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "Seedream4_fal"
+            },
+            "widgets_values": [
+                "A cinematic drone shot of a neon-lit city",
+                3.5,
+                28,
+                0.7,
+                "",
+                -1,
+                1,
+                "jpeg",
+                ""
+            ]
+        },
+        {
+            "id": 5,
+            "type": "Keling_fal",
+            "pos": [
+                520,
+                200
+            ],
+            "size": [
+                420,
+                240
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "image",
+                    "type": "IMAGE",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "Keling_fal"
+            },
+            "widgets_values": [
+                "An abstract timelapse of waves rolling over chrome rocks",
+                "text-to-video",
+                "16:9",
+                "5s",
+                "",
+                -1,
+                false,
+                "",
+                ""
+            ]
+        },
+        {
+            "id": 6,
+            "type": "Veo3_fal",
+            "pos": [
+                960,
+                200
+            ],
+            "size": [
+                420,
+                220
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "Veo3_fal"
+            },
+            "widgets_values": [
+                "A surreal sunrise over floating glass mountains",
+                "16:9",
+                "8s",
+                "",
+                true,
+                -1,
+                true
+            ]
+        },
+        {
+            "id": 7,
+            "type": "PreviewImage",
+            "pos": [
+                520,
+                200
+            ],
+            "size": [
+                480,
+                480
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 3
+                }
+            ],
+            "outputs": [],
+            "properties": {
+                "Node name for S&R": "PreviewImage"
+            },
+            "widgets_values": []
+        }
+    ],
+    "links": [
+        [
+            1,
+            1,
+            0,
+            2,
+            0,
+            "IMAGE"
+        ],
+        [
+            2,
+            2,
+            0,
+            3,
+            0,
+            "IMAGE"
+        ],
+        [
+            3,
+            4,
+            0,
+            7,
+            0,
+            "IMAGE"
+        ]
+    ],
+    "groups": [],
+    "config": {},
+    "extra": {
+        "ds": {
+            "scale": 0.85,
+            "offset": [
+                -80,
+                160
+            ]
+        }
+    }
+}

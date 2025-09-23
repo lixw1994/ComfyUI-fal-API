@@ -1498,6 +1498,83 @@ class SeedEditV3:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
 
+class Seedream4:
+    DEFAULT_ENDPOINT = "fal-ai/seedream-4"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "prompt": ("STRING", {"default": "", "multiline": True}),
+                "guidance_scale": (
+                    "FLOAT",
+                    {"default": 3.5, "min": 0.0, "max": 20.0, "step": 0.1},
+                ),
+                "num_inference_steps": (
+                    "INT",
+                    {"default": 28, "min": 1, "max": 100},
+                ),
+            },
+            "optional": {
+                "image": ("IMAGE",),
+                "image_strength": (
+                    "FLOAT",
+                    {"default": 0.7, "min": 0.0, "max": 1.0, "step": 0.05},
+                ),
+                "negative_prompt": ("STRING", {"default": "", "multiline": True}),
+                "seed": ("INT", {"default": -1, "min": -1, "max": 2147483647}),
+                "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
+                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
+                "custom_endpoint": ("STRING", {"default": ""}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+    FUNCTION = "generate_image"
+    CATEGORY = "FAL/Image"
+
+    def generate_image(
+        self,
+        prompt,
+        guidance_scale,
+        num_inference_steps,
+        image=None,
+        image_strength=0.7,
+        negative_prompt="",
+        seed=-1,
+        num_images=1,
+        output_format="jpeg",
+        custom_endpoint="",
+    ):
+        endpoint = custom_endpoint.strip() or self.DEFAULT_ENDPOINT
+        arguments = {
+            "prompt": prompt,
+            "guidance_scale": guidance_scale,
+            "num_inference_steps": num_inference_steps,
+            "negative_prompt": negative_prompt,
+            "num_images": num_images,
+            "output_format": output_format,
+        }
+
+        if seed != -1:
+            arguments["seed"] = seed
+
+        if image is not None:
+            image_url = ImageUtils.upload_image(image)
+            if not image_url:
+                return ApiHandler.handle_image_generation_error(
+                    "Seedream4", "Failed to upload reference image"
+                )
+            arguments["image_url"] = image_url
+            arguments["image_strength"] = image_strength
+
+        try:
+            result = ApiHandler.submit_and_get_result(endpoint, arguments)
+            return ResultProcessor.process_image_result(result)
+        except Exception as e:
+            return ApiHandler.handle_image_generation_error("Seedream4", e)
+
+
 class NanoBananaEdit:
     @classmethod
     def INPUT_TYPES(cls):
@@ -1529,18 +1606,17 @@ class NanoBananaEdit:
         num_images=1,
         output_format="jpeg",
     ):
-        # Upload all provided images
         image_urls = []
 
         for i, img in enumerate([image_1, image_2, image_3, image_4], 1):
-            if img is not None:
-                url = ImageUtils.upload_image(img)
-                if url:
-                    image_urls.append(url)
-                else:
-                    print(f"Error: Failed to upload image {i} for Nano Banana Edit")
-                    return ResultProcessor.create_blank_image()
-
+            if img is None:
+                continue
+            url = ImageUtils.upload_image(img)
+            if url:
+                image_urls.append(url)
+            else:
+                print(f"Error: Failed to upload image {i} for Nano Banana Edit")
+                return ResultProcessor.create_blank_image()
 
         arguments = {
             "prompt": prompt,
@@ -1575,6 +1651,7 @@ NODE_CLASS_MAPPINGS = {
     "Imagen4Preview_fal": Imagen4PreviewNode,
     "QwenImageEdit_fal": QwenImageEdit,
     "SeedEditV3_fal": SeedEditV3,
+    "Seedream4_fal": Seedream4,
     "NanoBananaEdit_fal": NanoBananaEdit,
 }
 
@@ -1598,5 +1675,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "Imagen4Preview_fal": "Imagen4 Preview (fal)",
     "QwenImageEdit_fal": "Qwen Image Edit (fal)",
     "SeedEditV3_fal": "SeedEdit 3.0 (fal)",
+    "Seedream4_fal": "Seedream4 (fal)",
     "NanoBananaEdit_fal": "Nano Banana Edit (fal)",
 }

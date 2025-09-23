@@ -71,6 +71,8 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
 - **Sana (fal)**: High-quality image synthesis with ultra-high resolution support
 - **HiDream Full (fal)**: Advanced image generation with comprehensive parameter control
 - **Ideogram v3 (fal)**: Advanced text-to-image generation with typography support
+- **Nano Banana Edit (fal)**: Multi-image guided editing leveraging Google's Nano Banana model
+- **Seedream4 (fal)**: Google diffusion model supporting text-to-image and image-to-image with strength control
 
 ### Video Generation
 
@@ -90,7 +92,15 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
   - Supports Kling Pro v1.6, Kling Master v2.0, MiniMax, Luma, Veo2, and Wan Pro
   - Each service can be individually enabled/disabled
   - Wan Pro runs with safety checker enabled and automatic seed selection
+- **Google Veo3 (fal)**: Next-generation video synthesis with optional audio track
+- **Keling (fal)**: Flexible Google video generation with text-to-video and image-to-video modes
 - **Load Video from URL**: Load and process videos from a given URL
+
+### Example Workflows
+
+- `example_workflows/Flux-Kontext-Workflow.json`: Flux Pro Kontext image-to-image setup
+- `example_workflows/Video-Workflow-Veo2.json`: Google Veo2 image-to-video pipeline
+- `example_workflows/Google-Models.json`: Quick start for Nano Banana, Seedream4, Keling, and Veo3 nodes
 
 ### Language Models (LLMs)
 

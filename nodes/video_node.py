@@ -1195,6 +1195,88 @@ class Veo3Node:
             return ApiHandler.handle_video_generation_error("veo3", str(e))
 
 
+class KelingNode:
+    TEXT_ENDPOINT = "fal-ai/keling/text-to-video"
+    IMAGE_ENDPOINT = "fal-ai/keling/image-to-video"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "prompt": ("STRING", {"default": "", "multiline": True}),
+                "mode": (["text-to-video", "image-to-video"], {"default": "text-to-video"}),
+                "aspect_ratio": ("STRING", {"default": "16:9"}),
+                "duration": ("STRING", {"default": "5s"}),
+            },
+            "optional": {
+                "image": ("IMAGE",),
+                "negative_prompt": ("STRING", {"default": "", "multiline": True}),
+                "seed": ("INT", {"default": -1, "min": -1, "max": 2147483647}),
+                "generate_audio": ("BOOLEAN", {"default": False}),
+                "custom_text_endpoint": ("STRING", {"default": ""}),
+                "custom_image_endpoint": ("STRING", {"default": ""}),
+            },
+        }
+
+    RETURN_TYPES = ("STRING",)
+    FUNCTION = "generate_video"
+    CATEGORY = "FAL/VideoGeneration"
+
+    def generate_video(
+        self,
+        prompt,
+        mode,
+        aspect_ratio,
+        duration,
+        image=None,
+        negative_prompt="",
+        seed=-1,
+        generate_audio=False,
+        custom_text_endpoint="",
+        custom_image_endpoint="",
+    ):
+        if mode == "image-to-video":
+            if image is None:
+                return ApiHandler.handle_video_generation_error(
+                    "Keling", "Reference image required for image-to-video mode"
+                )
+            endpoint = custom_image_endpoint.strip() or self.IMAGE_ENDPOINT
+            image_url = ImageUtils.upload_image(image)
+            if not image_url:
+                return ApiHandler.handle_video_generation_error(
+                    endpoint, "Failed to upload input image"
+                )
+            arguments = {
+                "prompt": prompt,
+                "image_url": image_url,
+                "aspect_ratio": aspect_ratio,
+                "duration": duration,
+                "negative_prompt": negative_prompt,
+                "generate_audio": generate_audio,
+            }
+        else:
+            endpoint = custom_text_endpoint.strip() or self.TEXT_ENDPOINT
+            arguments = {
+                "prompt": prompt,
+                "aspect_ratio": aspect_ratio,
+                "duration": duration,
+                "negative_prompt": negative_prompt,
+                "generate_audio": generate_audio,
+            }
+
+        if seed != -1:
+            arguments["seed"] = seed
+
+        try:
+            result = ApiHandler.submit_and_get_result(endpoint, arguments)
+            video_url = result.get("video", {}).get("url")
+            if not video_url:
+                raise ValueError("Keling response missing video url")
+            return (video_url,)
+        except Exception as e:
+            return ApiHandler.handle_video_generation_error("Keling", str(e))
+
+
 # Update Node class mappings
 NODE_CLASS_MAPPINGS = {
     "Kling_fal": KlingNode,
@@ -1214,6 +1296,7 @@ NODE_CLASS_MAPPINGS = {
     "SeedanceImageToVideo_fal": SeedanceImageToVideoNode,
     "SeedanceTextToVideo_fal": SeedanceTextToVideoNode,
     "Veo3_fal": Veo3Node,
+    "Keling_fal": KelingNode,
 }
 
 # Update Node display name mappings
@@ -1235,4 +1318,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "SeedanceImageToVideo_fal": "Seedance Image-to-Video (fal)",
     "SeedanceTextToVideo_fal": "Seedance Text-to-Video (fal)",
     "Veo3_fal": "Veo3 Video Generation (fal)",
+    "Keling_fal": "Keling (fal)",
 }
