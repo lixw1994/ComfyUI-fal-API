@@ -71,8 +71,10 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
 - **Sana (fal)**: High-quality image synthesis with ultra-high resolution support
 - **HiDream Full (fal)**: Advanced image generation with comprehensive parameter control
 - **Ideogram v3 (fal)**: Advanced text-to-image generation with typography support
-- **Nano Banana Edit (fal)**: Multi-image guided editing leveraging Google's Nano Banana model
-- **Seedream4 (fal)**: Google diffusion model supporting text-to-image and image-to-image with strength control
+- **Nano Banana (fal)**: Google diffusion model for prompt-only image generation
+- **Nano Banana Edit (fal)**: Multi-image guided editing variant of Nano Banana
+- **Seedream4 Text-to-Image (fal)**: Seedream v4 prompt-to-image generation with guidance controls
+- **Seedream4 Edit (fal)**: Seedream v4 image editing with adjustable strength
 
 ### Video Generation
 
@@ -93,42 +95,38 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
   - Each service can be individually enabled/disabled
   - Wan Pro runs with safety checker enabled and automatic seed selection
 - **Google Veo3 (fal)**: Next-generation video synthesis with optional audio track
-- **Keling (fal)**: Flexible Google video generation with text-to-video and image-to-video modes
+- **Google Veo3 Fast (fal)**: Low-latency Veo3 generation with auto-fix and audio controls
+- **Google Veo3 Image-to-Video (fal)**: Animate reference frames with Veo3
+- **Google Veo3 Fast Image-to-Video (fal)**: Rapid Veo3 animation variant tuned for speed
+- **Kling Master v2.1 Video Generation (fal)**: Enhanced Master tier with CFG and negative prompt support
+- **Kling Turbo v2.5 Pro Video Generation (fal)**: Latest Kling fast Pro pipeline with tail image support
 - **Load Video from URL**: Load and process videos from a given URL
 
 ### Example Workflows
 
 - `example_workflows/Flux-Kontext-Workflow.json`: Flux Pro Kontext image-to-image setup
 - `example_workflows/Video-Workflow-Veo2.json`: Google Veo2 image-to-video pipeline
-- `example_workflows/Google-Models.json`: Quick start for Nano Banana, Seedream4, Keling, and Veo3 nodes
 
 ### Language Models (LLMs)
 
 - **LLM (fal)**: Large Language Model for text generation and processing
-  - Available models:
-    - google/gemini-flash-1.5-8b
-    - anthropic/claude-3.5-sonnet
-    - anthropic/claude-3-haiku
-    - google/gemini-pro-1.5
-    - google/gemini-flash-1.5
-    - meta-llama/llama-3.2-1b-instruct
-    - meta-llama/llama-3.2-3b-instruct
-    - meta-llama/llama-3.1-8b-instruct
-    - meta-llama/llama-3.1-70b-instruct
-    - openai/gpt-4o-mini
-    - openai/gpt-4o
+  - Supports explicit `reasoning`, `priority`, `temperature`, and `max_tokens` controls
+  - Available models (excerpt):
+    - google/gemini-2.5-flash, google/gemini-2.5-pro, google/gemini-2.0-flash-001
+    - anthropic/claude-3.5-sonnet, anthropic/claude-3-5-haiku, anthropic/claude-3.7-sonnet
+    - deepseek/deepseek-r1, meta-llama/llama-4-maverick, meta-llama/llama-3.2-90b-vision-instruct
+    - openai/gpt-5-chat, openai/gpt-4.1, openai/gpt-4o, openai/o3, openai/gpt-oss-120b
 
 ### Vision Language Models (VLMs)
 
 - **VLM (fal)**: Vision Language Model for image understanding and text generation
-  - Available models:
-    - google/gemini-flash-1.5-8b
-    - anthropic/claude-3.5-sonnet
-    - anthropic/claude-3-haiku
-    - google/gemini-pro-1.5
-    - google/gemini-flash-1.5
-    - openai/gpt-4o
-  - Supports various tasks such as image captioning, visual question answering, and more
+  - Supports `reasoning`, `priority`, `temperature`, and `max_tokens`, plus image upload
+  - Available models (excerpt):
+    - google/gemini-2.5-flash / flash-lite / pro, google/gemini-2.0-flash-001
+    - anthropic/claude-3.7-sonnet, anthropic/claude-3.5-sonnet, anthropic/claude-3-5-haiku
+    - meta-llama/llama-3.2-90b-vision-instruct, meta-llama/llama-4-maverick, meta-llama/llama-4-scout
+    - openai/gpt-4o, openai/gpt-4o-mini, openai/gpt-4.1, openai/gpt-5-chat, openai/o3
+  - Ideal for captioning, VQA, reasoning over visual context, and multimodal prompt chaining
 
 ## Troubleshooting
 
