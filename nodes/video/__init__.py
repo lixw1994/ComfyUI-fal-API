@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from . import (
-    combined,
     kling,
     load,
     luma,
@@ -23,7 +22,6 @@ _MODULES = [
     upscaler,
     load,
     seedance,
-    combined,
 ]
 
 NODE_CLASS_MAPPINGS = {}
