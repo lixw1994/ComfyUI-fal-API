@@ -75,6 +75,11 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
 - **Nano Banana Edit (fal)**: Multi-image guided editing variant of Nano Banana
 - **Seedream4 Text-to-Image (fal)**: Seedream v4 prompt-to-image generation with guidance controls
 - **Seedream4 Edit (fal)**: Seedream v4 image editing with adjustable strength
+- **Qwen Image Text-to-Image (fal)**: Generate new scenes with Qwen Studio’s diffusion base
+- **Qwen Image-to-Image (fal)**: Translate reference imagery with controllable strength
+- **Qwen Image Edit (fal)**: Guided edits with acceleration and safety controls
+- **Qwen Image Edit Inpaint (fal)**: Mask-based regional edits with Qwen Studio
+- **Qwen Image Edit Plus (fal)**: Blend up to four references for richer edits
 
 ### Video Generation
 
@@ -89,6 +94,11 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
 - **MiniMax Subject Reference (fal)**: Generate videos with subject reference using MiniMax
 - **Google Veo2 Image-to-Video (fal)**: Convert images to videos using Google's Veo2 model
 - **Wan Pro Image-to-Video (fal)**: High-quality video generation with Wan Pro model
+- **Wan Pro Text-to-Video (fal)**: Describe motion sequences directly for Wan Pro
+- **Wan Turbo Text-to-Video (fal)**: Low-latency Wan Turbo text-to-video synthesis
+- **Wan Turbo Image-to-Video (fal)**: Rapid animation of reference images with Wan Turbo
+- **Wan Animate Move (fal)**: Apply motion edits to existing clips using Wan 2.2 Animate
+- **Wan Animate Replace (fal)**: Swap subjects within footage via Wan 2.2 Animate Replace
 - **Video Upscaler (fal)**: Upscale video quality using AI
 - **Google Veo3 (fal)**: Next-generation video synthesis with optional audio track
 - **Google Veo3 Fast (fal)**: Low-latency Veo3 generation with auto-fix and audio controls
