@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler
 
 
 class Imagen4PreviewNode:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Imagen4 Preview"
+    FAL_ENDPOINT = "fal-ai/imagen4/preview"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -14,7 +18,6 @@ class Imagen4PreviewNode:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(self, prompt):
         arguments = {
@@ -22,7 +25,7 @@ class Imagen4PreviewNode:
         }
 
         return ApiHandler.run_image_job(
-            "Imagen4 Preview", "fal-ai/imagen4/preview", arguments
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
         )
 
 

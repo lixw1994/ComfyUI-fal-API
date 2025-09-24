@@ -3,7 +3,8 @@ from __future__ import annotations
 from ..fal_utils import ApiHandler, ImageUtils, ResultProcessor
 
 class NanoBanana:
-    ENDPOINT = "fal-ai/nano-banana"
+    CATEGORY = "FAL/Image"
+    FAL_ENDPOINT = "fal-ai/nano-banana"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -13,21 +14,18 @@ class NanoBanana:
             },
             "optional": {
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
         prompt,
         num_images=1,
-        output_format="jpeg",
-        sync_mode=False,
+        output_format="png",
     ):
         arguments = {
             "prompt": prompt,
@@ -35,13 +33,13 @@ class NanoBanana:
             "output_format": output_format,
         }
 
-        if sync_mode:
-            arguments["sync_mode"] = sync_mode
-
-        return ApiHandler.run_image_job("Nano Banana", self.ENDPOINT, arguments)
+        return ApiHandler.run_image_job("Nano Banana", self.FAL_ENDPOINT, arguments)
 
 
 class NanoBananaEdit:
+    CATEGORY = "FAL/Image"
+    FAL_ENDPOINT = "fal-ai/nano-banana/edit"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -54,14 +52,12 @@ class NanoBananaEdit:
                 "image_3": ("IMAGE",),
                 "image_4": ("IMAGE",),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -71,8 +67,7 @@ class NanoBananaEdit:
         image_3=None,
         image_4=None,
         num_images=1,
-        output_format="jpeg",
-        sync_mode=False,
+        output_format="png",
     ):
         image_urls = []
 
@@ -98,11 +93,8 @@ class NanoBananaEdit:
 
         arguments["image_urls"] = image_urls
 
-        if sync_mode:
-            arguments["sync_mode"] = sync_mode
-
         return ApiHandler.run_image_job(
-            "Nano Banana Edit", "fal-ai/nano-banana/edit", arguments
+            "Nano Banana Edit", self.FAL_ENDPOINT, arguments
         )
 
 

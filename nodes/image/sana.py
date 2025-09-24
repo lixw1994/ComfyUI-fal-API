@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler
 
 
 class Sana:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Sana"
+    FAL_ENDPOINT = "fal-ai/sana"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -46,7 +50,6 @@ class Sana:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -80,7 +83,9 @@ class Sana:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job("Sana", "fal-ai/sana", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 NODE_CLASS_MAPPINGS = {

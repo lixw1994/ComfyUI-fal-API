@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler, ImageUtils, ResultProcessor
 
 
 class SeedEditV3:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "SeedEdit 3.0"
+    FAL_ENDPOINT = "fal-ai/bytedance/seededit/v3/edit-image"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -22,7 +26,6 @@ class SeedEditV3:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -31,13 +34,11 @@ class SeedEditV3:
         guidance_scale=0.5,
         seed=-1,
     ):
-        model_name = "SeedEdit 3.0"
         image_url = ImageUtils.upload_image(image)
         if not image_url:
-            print(f"Error: Failed to upload image for {model_name}")
+            print(f"Error: Failed to upload image for {self.MODEL_NAME}")
             return ResultProcessor.create_blank_image()
 
-        endpoint = "fal-ai/bytedance/seededit/v3/edit-image"
         arguments = {
             "prompt": prompt,
             "image_url": image_url,
@@ -46,7 +47,9 @@ class SeedEditV3:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_single_image_job(model_name, endpoint, arguments)
+        return ApiHandler.run_single_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 NODE_CLASS_MAPPINGS = {

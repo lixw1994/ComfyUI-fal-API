@@ -1,8 +1,13 @@
 from __future__ import annotations
 
-from ..fal_utils import ApiHandler, ImageUtils
+from ..fal_utils import ApiHandler, ImageUtils, ResultProcessor
+
 
 class FluxPro:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxPro"
+    FAL_ENDPOINT = "fal-ai/flux-pro"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -40,7 +45,6 @@ class FluxPro:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -68,10 +72,16 @@ class FluxPro:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job("FluxPro", "fal-ai/flux-pro", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 class FluxDev:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxDev"
+    FAL_ENDPOINT = "fal-ai/flux/dev"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -109,7 +119,6 @@ class FluxDev:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -137,10 +146,16 @@ class FluxDev:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job("FluxDev", "fal-ai/flux/dev", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 class FluxSchnell:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxSchnell"
+    FAL_ENDPOINT = "fal-ai/flux/schnell"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -177,7 +192,6 @@ class FluxSchnell:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -203,10 +217,16 @@ class FluxSchnell:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job("FluxSchnell", "fal-ai/flux/schnell", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 class FluxPro11:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxPro 1.1"
+    FAL_ENDPOINT = "fal-ai/flux-pro/v1.1"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -237,13 +257,11 @@ class FluxPro11:
             },
             "optional": {
                 "seed": ("INT", {"default": -1}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -254,13 +272,11 @@ class FluxPro11:
         num_images,
         safety_tolerance,
         seed=-1,
-        sync_mode=False,
     ):
         arguments = {
             "prompt": prompt,
             "num_images": num_images,
             "safety_tolerance": safety_tolerance,
-            "sync_mode": sync_mode,
         }
         if image_size == "custom":
             arguments["image_size"] = {"width": width, "height": height}
@@ -270,11 +286,15 @@ class FluxPro11:
             arguments["seed"] = seed
 
         return ApiHandler.run_image_job(
-            "FluxPro 1.1", "fal-ai/flux-pro/v1.1", arguments
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
         )
 
 
 class FluxUltra:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxUltra"
+    FAL_ENDPOINT = "fal-ai/flux-pro/v1.1-ultra"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -288,7 +308,6 @@ class FluxUltra:
                 "safety_tolerance": (["1", "2", "3", "4", "5", "6"], {"default": "2"}),
                 "enable_safety_checker": ("BOOLEAN", {"default": True}),
                 "raw": ("BOOLEAN", {"default": False}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
             },
             "optional": {
                 "seed": ("INT", {"default": -1}),
@@ -297,7 +316,6 @@ class FluxUltra:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -307,7 +325,6 @@ class FluxUltra:
         safety_tolerance,
         enable_safety_checker,
         raw,
-        sync_mode,
         seed=-1,
     ):
         arguments = {
@@ -317,17 +334,20 @@ class FluxUltra:
             "safety_tolerance": safety_tolerance,
             "enable_safety_checker": enable_safety_checker,
             "raw": raw,
-            "sync_mode": sync_mode,
         }
         if seed != -1:
             arguments["seed"] = seed
 
         return ApiHandler.run_image_job(
-            "FluxUltra", "fal-ai/flux-pro/v1.1-ultra", arguments
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
         )
 
 
 class FluxLora:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxLora"
+    FAL_ENDPOINT = "fal-ai/flux-lora"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -378,7 +398,6 @@ class FluxLora:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -419,10 +438,16 @@ class FluxLora:
         if loras:
             arguments["loras"] = loras
 
-        return ApiHandler.run_image_job("FluxLora", "fal-ai/flux-lora", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 class FluxGeneral:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "FluxGeneral"
+    FAL_ENDPOINT = "fal-ai/flux-general"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -460,7 +485,6 @@ class FluxGeneral:
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 "enable_safety_checker": ("BOOLEAN", {"default": False}),
                 "use_real_cfg": ("BOOLEAN", {"default": False}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
             },
             "optional": {
                 "seed": ("INT", {"default": -1}),
@@ -521,7 +545,6 @@ class FluxGeneral:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -535,7 +558,6 @@ class FluxGeneral:
         num_images,
         enable_safety_checker,
         use_real_cfg,
-        sync_mode,
         seed=-1,
         lora_path_1="",
         lora_scale_1=1.0,
@@ -560,7 +582,6 @@ class FluxGeneral:
             "num_images": num_images,
             "enable_safety_checker": enable_safety_checker,
             "use_real_cfg": use_real_cfg,
-            "sync_mode": sync_mode,
         }
         if image_size == "custom":
             arguments["image_size"] = {"width": width, "height": height}
@@ -688,11 +709,17 @@ class FluxGeneral:
             arguments["loras"] = loras
 
         return ApiHandler.run_image_job(
-            "FluxGeneral", "fal-ai/flux-general", arguments
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
         )
 
 
 class FluxProKontext:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Flux Pro Kontext"
+    MODEL_NAME_MAX = "Flux Pro Kontext Max"
+    FAL_ENDPOINT = "fal-ai/flux-pro/kontext"
+    FAL_MAX_ENDPOINT = "fal-ai/flux-pro/kontext/max"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -723,15 +750,13 @@ class FluxProKontext:
                 ),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 "safety_tolerance": (["1", "2", "3", "4", "5", "6"], {"default": "2"}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**32 - 1}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -742,11 +767,10 @@ class FluxProKontext:
         guidance_scale=3.5,
         num_images=1,
         safety_tolerance="2",
-        output_format="jpeg",
-        sync_mode=False,
+        output_format="png",
         seed=0,
     ):
-        model_name = "Flux Pro Kontext Max" if max_quality else "Flux Pro Kontext"
+        model_name = self.MODEL_NAME_MAX if max_quality else self.MODEL_NAME
 
         # Upload the input image to get URL
         image_url = ImageUtils.upload_image(image)
@@ -755,9 +779,7 @@ class FluxProKontext:
             return ResultProcessor.create_blank_image()
 
         # Dynamic endpoint selection based on max_quality toggle
-        endpoint = (
-            "fal-ai/flux-pro/kontext/max" if max_quality else "fal-ai/flux-pro/kontext"
-        )
+        endpoint = self.FAL_MAX_ENDPOINT if max_quality else self.FAL_ENDPOINT
 
         arguments = {
             "prompt": prompt,
@@ -767,7 +789,6 @@ class FluxProKontext:
             "num_images": num_images,
             "safety_tolerance": safety_tolerance,
             "output_format": output_format,
-            "sync_mode": sync_mode,
         }
 
         if seed > 0:
@@ -777,6 +798,12 @@ class FluxProKontext:
 
 
 class FluxProKontextMulti:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Flux Pro Kontext Multi"
+    MODEL_NAME_MAX = "Flux Pro Kontext Max Multi"
+    FAL_ENDPOINT = "fal-ai/flux-pro/kontext/multi"
+    FAL_MAX_ENDPOINT = "fal-ai/flux-pro/kontext/max/multi"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -810,15 +837,13 @@ class FluxProKontextMulti:
                 ),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 "safety_tolerance": (["1", "2", "3", "4", "5", "6"], {"default": "2"}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**32 - 1}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -832,13 +857,10 @@ class FluxProKontextMulti:
         guidance_scale=3.5,
         num_images=1,
         safety_tolerance="2",
-        output_format="jpeg",
-        sync_mode=False,
+        output_format="png",
         seed=0,
     ):
-        model_name = (
-            "Flux Pro Kontext Max Multi" if max_quality else "Flux Pro Kontext Multi"
-        )
+        model_name = self.MODEL_NAME_MAX if max_quality else self.MODEL_NAME
 
         # Upload all provided images
         image_urls = []
@@ -857,11 +879,7 @@ class FluxProKontextMulti:
             return ResultProcessor.create_blank_image()
 
         # Dynamic endpoint selection based on max_quality toggle
-        endpoint = (
-            "fal-ai/flux-pro/kontext/max/multi"
-            if max_quality
-            else "fal-ai/flux-pro/kontext/multi"
-        )
+        endpoint = self.FAL_MAX_ENDPOINT if max_quality else self.FAL_ENDPOINT
 
         arguments = {
             "prompt": prompt,
@@ -871,7 +889,6 @@ class FluxProKontextMulti:
             "num_images": num_images,
             "safety_tolerance": safety_tolerance,
             "output_format": output_format,
-            "sync_mode": sync_mode,
         }
 
         if seed > 0:
@@ -881,6 +898,12 @@ class FluxProKontextMulti:
 
 
 class FluxProKontextTextToImage:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Flux Pro Kontext Text-to-Image"
+    MODEL_NAME_MAX = "Flux Pro Kontext Max Text-to-Image"
+    FAL_ENDPOINT = "fal-ai/flux-pro/kontext/text-to-image"
+    FAL_MAX_ENDPOINT = "fal-ai/flux-pro/kontext/max/text-to-image"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -899,15 +922,13 @@ class FluxProKontextTextToImage:
                 ),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 "safety_tolerance": (["1", "2", "3", "4", "5", "6"], {"default": "2"}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**32 - 1}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -917,22 +938,13 @@ class FluxProKontextTextToImage:
         guidance_scale=3.5,
         num_images=1,
         safety_tolerance="2",
-        output_format="jpeg",
-        sync_mode=False,
+        output_format="png",
         seed=0,
     ):
-        model_name = (
-            "Flux Pro Kontext Max Text-to-Image"
-            if max_quality
-            else "Flux Pro Kontext Text-to-Image"
-        )
+        model_name = self.MODEL_NAME_MAX if max_quality else self.MODEL_NAME
 
         # Dynamic endpoint selection based on max_quality toggle
-        endpoint = (
-            "fal-ai/flux-pro/kontext/max/text-to-image"
-            if max_quality
-            else "fal-ai/flux-pro/kontext/text-to-image"
-        )
+        endpoint = self.FAL_MAX_ENDPOINT if max_quality else self.FAL_ENDPOINT
 
         arguments = {
             "prompt": prompt,
@@ -941,7 +953,6 @@ class FluxProKontextTextToImage:
             "num_images": num_images,
             "safety_tolerance": safety_tolerance,
             "output_format": output_format,
-            "sync_mode": sync_mode,
         }
 
         if seed > 0:

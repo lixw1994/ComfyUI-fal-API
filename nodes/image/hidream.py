@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler
 
 
 class HidreamFull:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Hidream Full"
+    FAL_ENDPOINT = "fal-ai/hidream-i1-full"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -41,7 +45,6 @@ class HidreamFull:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -70,7 +73,7 @@ class HidreamFull:
             arguments["seed"] = seed
 
         return ApiHandler.run_image_job(
-            "Hidream Full", "fal-ai/hidream-i1-full", arguments
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
         )
 
 

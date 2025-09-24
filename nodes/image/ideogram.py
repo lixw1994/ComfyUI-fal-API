@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler
 
 
 class Ideogramv3:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Ideogramv3"
+    FAL_ENDPOINT = "fal-ai/ideogram/v3"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -41,7 +45,6 @@ class Ideogramv3:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -69,7 +72,9 @@ class Ideogramv3:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job("Ideogramv3", "fal-ai/ideogram/v3", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 NODE_CLASS_MAPPINGS = {

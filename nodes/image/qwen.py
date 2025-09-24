@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler, ImageUtils, ResultProcessor
 
 
 class QwenImageEdit:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Qwen Image Edit"
+    FAL_ENDPOINT = "fal-ai/qwen-image-edit"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -39,7 +43,6 @@ class QwenImageEdit:
                 "enable_safety_checker": ("BOOLEAN", {"default": True}),
                 "output_format": (["png", "jpeg"], {"default": "png"}),
                 "acceleration": (["none", "regular", "high"], {"default": "none"}),
-                "sync_mode": ("BOOLEAN", {"default": False}),
             },
             "optional": {
                 "negative_prompt": ("STRING", {"default": "", "multiline": True}),
@@ -49,7 +52,6 @@ class QwenImageEdit:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "edit_image"
-    CATEGORY = "FAL/Image"
 
     def edit_image(
         self,
@@ -64,14 +66,12 @@ class QwenImageEdit:
         enable_safety_checker,
         output_format,
         acceleration,
-        sync_mode,
         negative_prompt="",
         seed=-1,
     ):
-        model_name = "Qwen Image Edit"
         image_url = ImageUtils.upload_image(image)
         if not image_url:
-            print(f"Error: Failed to upload image for {model_name}")
+            print(f"Error: Failed to upload image for {self.MODEL_NAME}")
             return ResultProcessor.create_blank_image()
 
         arguments = {
@@ -83,7 +83,6 @@ class QwenImageEdit:
             "enable_safety_checker": enable_safety_checker,
             "output_format": output_format,
             "acceleration": acceleration,
-            "sync_mode": sync_mode,
         }
 
         if image_size == "custom":
@@ -97,7 +96,9 @@ class QwenImageEdit:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job(model_name, "fal-ai/qwen-image-edit", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 NODE_CLASS_MAPPINGS = {

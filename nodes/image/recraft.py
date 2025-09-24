@@ -4,6 +4,10 @@ from ..fal_utils import ApiHandler
 
 
 class Recraft:
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Recraft"
+    FAL_ENDPOINT = "fal-ai/recraft-v3"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -66,7 +70,6 @@ class Recraft:
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(self, prompt, image_size, width, height, style, style_id=""):
         arguments = {
@@ -82,7 +85,9 @@ class Recraft:
         if style_id:
             arguments["style_id"] = style_id
 
-        return ApiHandler.run_image_job("Recraft", "fal-ai/recraft-v3", arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 
 NODE_CLASS_MAPPINGS = {

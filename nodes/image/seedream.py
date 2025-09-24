@@ -3,7 +3,9 @@ from __future__ import annotations
 from ..fal_utils import ApiHandler, ImageUtils
 
 class Seedream4TextToImage:
-    ENDPOINT = "fal-ai/bytedance/seedream/v4/text-to-image"
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Seedream4 Text-to-Image"
+    FAL_ENDPOINT = "fal-ai/bytedance/seedream/v4/text-to-image"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -23,13 +25,12 @@ class Seedream4TextToImage:
                 "negative_prompt": ("STRING", {"default": "", "multiline": True}),
                 "seed": ("INT", {"default": -1, "min": -1, "max": 2147483647}),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -39,7 +40,7 @@ class Seedream4TextToImage:
         negative_prompt="",
         seed=-1,
         num_images=1,
-        output_format="jpeg",
+        output_format="png",
     ):
         arguments = {
             "prompt": prompt,
@@ -54,12 +55,14 @@ class Seedream4TextToImage:
             arguments["seed"] = seed
 
         return ApiHandler.run_image_job(
-            "Seedream4 Text-to-Image", self.ENDPOINT, arguments
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
         )
 
 
 class Seedream4ImageEdit:
-    ENDPOINT = "fal-ai/bytedance/seedream/v4/edit"
+    CATEGORY = "FAL/Image"
+    MODEL_NAME = "Seedream4 Edit"
+    FAL_ENDPOINT = "fal-ai/bytedance/seedream/v4/edit"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -84,13 +87,12 @@ class Seedream4ImageEdit:
                 "negative_prompt": ("STRING", {"default": "", "multiline": True}),
                 "seed": ("INT", {"default": -1, "min": -1, "max": 2147483647}),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
-                "output_format": (["jpeg", "png"], {"default": "jpeg"}),
+                "output_format": (["jpeg", "png"], {"default": "png"}),
             },
         }
 
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "generate_image"
-    CATEGORY = "FAL/Image"
 
     def generate_image(
         self,
@@ -102,12 +104,12 @@ class Seedream4ImageEdit:
         negative_prompt="",
         seed=-1,
         num_images=1,
-        output_format="jpeg",
+        output_format="png",
     ):
         image_url = ImageUtils.upload_image(image)
         if not image_url:
             return ApiHandler.handle_image_generation_error(
-                "Seedream4 Edit", "Failed to upload reference image"
+                self.MODEL_NAME, "Failed to upload reference image"
             )
 
         arguments = {
@@ -124,7 +126,9 @@ class Seedream4ImageEdit:
         if seed != -1:
             arguments["seed"] = seed
 
-        return ApiHandler.run_image_job("Seedream4 Edit", self.ENDPOINT, arguments)
+        return ApiHandler.run_image_job(
+            self.MODEL_NAME, self.FAL_ENDPOINT, arguments
+        )
 
 NODE_CLASS_MAPPINGS = {
     "Seedream4TextToImage_fal": Seedream4TextToImage,
