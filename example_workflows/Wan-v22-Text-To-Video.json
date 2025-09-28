@@ -1,0 +1,135 @@
+{
+  "id": "c1fcb9fc-1d36-4a29-b77b-1b0fd1cb7f15",
+  "revision": 0,
+  "last_node_id": 2,
+  "last_link_id": 1,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "WanV22TextToVideo_fal",
+      "pos": [
+        200,
+        120
+      ],
+      "size": [
+        380,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "WanV22TextToVideo_fal"
+      },
+      "widgets_values": [
+        "A slow camera orbit around a neon-lit cyberpunk alley",
+        "",
+        81,
+        24,
+        0,
+        "720p",
+        "16:9",
+        40,
+        true,
+        true,
+        3.5,
+        3.5,
+        5.0,
+        "none",
+        0,
+        true,
+        "high",
+        "balanced",
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadVideoURL",
+      "pos": [
+        640,
+        120
+      ],
+      "size": [
+        270,
+        266
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "url",
+          "type": "STRING",
+          "widget": {
+            "name": "url"
+          },
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "frames",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadVideoURL"
+      },
+      "widgets_values": [
+        "",
+        0,
+        "Disabled",
+        512,
+        512,
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.0,
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "frontendVersion": "1.18.10"
+  },
+  "version": 0.4
+}
