@@ -1,8 +1,8 @@
 {
   "id": "dc13d94b-2a1a-4d4c-8a1f-1e8a9b8f4a2e",
   "revision": 0,
-  "last_node_id": 3,
-  "last_link_id": 2,
+  "last_node_id": 4,
+  "last_link_id": 3,
   "nodes": [
     {
       "id": 1,
@@ -75,7 +75,7 @@
         "Node name for S&R": "WanAnimateReplace_fal"
       },
       "widgets_values": [
-        "https://storage.googleapis.com/fal-examples/videos/wan_replace_source.mp4",
+        "https://raw.githubusercontent.com/Wan-Video/Wan2.2/main/examples/wan_animate/replace/video.mp4",
         null,
         null,
         "Replace the main subject with a stylized cyberpunk hero",
@@ -144,6 +144,67 @@
         0,
         1
       ]
+    },
+    {
+      "id": 4,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        1180,
+        80
+      ],
+      "size": [
+        260,
+        360
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine"
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "WanAnimateReplace",
+        "format": "video/mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 18,
+        "save_metadata": false,
+        "pingpong": false,
+        "save_output": true
+      }
     }
   ],
   "links": [
@@ -162,6 +223,14 @@
       3,
       0,
       "STRING"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "IMAGE"
     ]
   ],
   "groups": [],
