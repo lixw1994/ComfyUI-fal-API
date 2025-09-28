@@ -1,0 +1,180 @@
+{
+  "id": "dc13d94b-2a1a-4d4c-8a1f-1e8a9b8f4a2e",
+  "revision": 0,
+  "last_node_id": 3,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        160,
+        80
+      ],
+      "size": [
+        210,
+        330
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "replacement.png",
+        "image"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "WanAnimateReplace_fal",
+      "pos": [
+        440,
+        80
+      ],
+      "size": [
+        430,
+        360
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "WanAnimateReplace_fal"
+      },
+      "widgets_values": [
+        "https://storage.googleapis.com/fal-examples/videos/wan_replace_source.mp4",
+        null,
+        null,
+        "Replace the main subject with a stylized cyberpunk hero",
+        0.8,
+        "480p",
+        20,
+        true,
+        5.0,
+        "high",
+        "balanced",
+        0,
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LoadVideoURL",
+      "pos": [
+        880,
+        80
+      ],
+      "size": [
+        270,
+        266
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "url",
+          "type": "STRING",
+          "widget": {
+            "name": "url"
+          },
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "frames",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadVideoURL"
+      },
+      "widgets_values": [
+        "",
+        0,
+        "Disabled",
+        512,
+        512,
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.0,
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "frontendVersion": "1.18.10"
+  },
+  "version": 0.4
+}

@@ -1,8 +1,10 @@
 import configparser
 import io
 import os
+import tempfile
 import threading
 import time
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 import numpy as np
@@ -11,6 +13,7 @@ from requests import HTTPError
 import torch
 from fal_client.client import Completed, SyncClient
 from PIL import Image
+import cv2
 
 # Default timeouts/polling can be tuned via env vars when integrating in different environments
 _HTTP_TIMEOUT_SECONDS = float(os.getenv("FAL_HTTP_TIMEOUT", "30"))
@@ -145,6 +148,149 @@ class ImageUtils:
             .expand(-1, -1, -1, 3)
         )
         return result
+
+
+class VideoUtils:
+    """Utility helpers for turning diverse video inputs into fal.ai-uploadable URLs."""
+
+    _DEFAULT_FPS = 24.0
+    _CONTENT_TYPE = "video/mp4"
+    _DEFAULT_FILENAME = "upload.mp4"
+
+    @staticmethod
+    def _tensor_to_uint8_frames(video) -> np.ndarray:
+        if video is None:
+            raise ValueError("Video input is required for upload")
+
+        if isinstance(video, torch.Tensor):
+            data = video.detach().cpu()
+            if data.ndim != 4:
+                raise ValueError("Expected a 4D tensor for video frames")
+            if data.shape[-1] == 3:
+                frames = data.numpy()
+            elif data.shape[1] == 3:
+                frames = data.permute(0, 2, 3, 1).numpy()
+            else:
+                raise ValueError("Video tensor must have three color channels")
+        else:
+            array = np.asarray(video)
+            if array.ndim != 4 or array.shape[-1] not in (1, 3):
+                raise ValueError("Unsupported video array shape")
+            frames = array
+            if frames.shape[-1] == 1:
+                frames = np.repeat(frames, 3, axis=-1)
+
+        if frames.dtype.kind == "f":
+            frames = np.clip(frames, 0.0, 1.0)
+            frames = (frames * 255.0).round().astype(np.uint8)
+        elif frames.dtype != np.uint8:
+            frames = frames.astype(np.uint8)
+
+        if frames.size == 0:
+            raise ValueError("Video tensor did not contain any frames")
+
+        return frames
+
+    @staticmethod
+    def _resolve_fps(video_info: Optional[Dict[str, Any]]) -> float:
+        if isinstance(video_info, dict):
+            candidates = [
+                video_info.get("loaded_fps"),
+                video_info.get("source_fps"),
+            ]
+            for candidate in candidates:
+                if isinstance(candidate, (int, float)) and candidate > 0:
+                    return float(candidate)
+        return VideoUtils._DEFAULT_FPS
+
+    @staticmethod
+    def _frames_to_mp4_bytes(frames: np.ndarray, fps: float) -> bytes:
+        height, width = frames.shape[1], frames.shape[2]
+        temp_path: Optional[str] = None
+        writer = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as temp_file:
+                temp_path = temp_file.name
+
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            writer = cv2.VideoWriter(temp_path, fourcc, fps, (width, height))
+            if not writer.isOpened():
+                raise RuntimeError("Failed to initialize video writer")
+
+            for frame in frames:
+                if frame.shape[0] != height or frame.shape[1] != width:
+                    raise ValueError("All video frames must share the same dimensions")
+                bgr_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                writer.write(bgr_frame)
+
+            writer.release()
+            writer = None
+
+            with open(temp_path, "rb") as handle:
+                data = handle.read()
+            if not data:
+                raise RuntimeError("Encoded video was empty")
+            return data
+        finally:
+            if writer is not None:
+                writer.release()
+            if temp_path and os.path.exists(temp_path):
+                try:
+                    os.unlink(temp_path)
+                except OSError:
+                    pass
+
+    @staticmethod
+    def _upload_bytes(client: SyncClient, data: bytes, file_name: str) -> str:
+        if not data:
+            raise ValueError("Cannot upload empty video data")
+        return client.upload(
+            data,
+            content_type=VideoUtils._CONTENT_TYPE,
+            file_name=file_name,
+        )
+
+    @staticmethod
+    def upload_video(video, video_info: Optional[Dict[str, Any]] = None) -> Optional[str]:
+        try:
+            if video is None:
+                raise ValueError("Video input is required for upload")
+
+            if isinstance(video, (list, tuple)) and len(video) == 1:
+                video = video[0]
+
+            client = FalConfig().get_client()
+
+            if isinstance(video, (str, os.PathLike)):
+                path = Path(video)
+                if not path.is_file():
+                    raise ValueError(f"Video file not found: {path}")
+                upload_file = getattr(client, "upload_file", None)
+                if callable(upload_file):
+                    return upload_file(os.fspath(path))
+                data = path.read_bytes()
+                return VideoUtils._upload_bytes(client, data, path.name)
+
+            if isinstance(video, (bytes, bytearray)):
+                return VideoUtils._upload_bytes(client, bytes(video), VideoUtils._DEFAULT_FILENAME)
+
+            if hasattr(video, "read"):
+                try:
+                    if hasattr(video, "seek"):
+                        video.seek(0)
+                except Exception:
+                    pass
+                data = video.read()
+                file_name = os.path.basename(getattr(video, "name", VideoUtils._DEFAULT_FILENAME)) or VideoUtils._DEFAULT_FILENAME
+                return VideoUtils._upload_bytes(client, data, file_name)
+
+            frames = VideoUtils._tensor_to_uint8_frames(video)
+            fps = VideoUtils._resolve_fps(video_info)
+            data = VideoUtils._frames_to_mp4_bytes(frames, fps)
+            return VideoUtils._upload_bytes(client, data, VideoUtils._DEFAULT_FILENAME)
+        except Exception as exc:
+            print(f"Error uploading video: {str(exc)}")
+            return None
 
 
 class ResultProcessor:
